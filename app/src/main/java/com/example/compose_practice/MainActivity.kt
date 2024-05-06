@@ -5,11 +5,19 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,9 +49,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier,
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ButtonExample (onButtonClicked = {
-                        Toast.makeText(this,  "Send clicked.", Toast.LENGTH_SHORT).show()
-                    })
+                    ModifierEx()
                 }
             }
         }
@@ -83,12 +91,42 @@ fun ButtonExample(onButtonClicked: () -> Unit) {
     }
 }
 
+@Composable
+fun ModifierEx() {
+    Button(
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Magenta,
+            contentColor = Color.Cyan
+        ),
+        onClick = {},
+        modifier = Modifier.size(200.dp).padding(30.dp),
+        shape = RectangleShape
+
+        ) {
+        Icon(
+            imageVector = Icons.Filled.Search,
+            contentDescription = null,
+            modifier = Modifier.background(Color.Blue)
+        )
+        Spacer(
+            modifier = Modifier
+                .size(ButtonDefaults.IconSpacing)
+                .background(Color.Blue)
+        )
+        Text(
+            "Search",
+            modifier = Modifier
+                .offset(x = 10.dp)
+                .background(Color.Blue)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ButtonExample (onButtonClicked = {
-        })
+        ModifierEx()
     }
 }
 
