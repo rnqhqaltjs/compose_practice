@@ -1,20 +1,15 @@
 package com.example.compose_practice
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -29,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,12 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier,
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    ModifierEx()
-                }
+                Surface(name = "Android")
             }
         }
     }
@@ -70,6 +59,26 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         textAlign = TextAlign.End
     )
 }
+
+@Composable
+fun Surface(name: String) {
+    Surface (
+        border = BorderStroke(
+            width = 2.dp,
+            color = Color.Magenta
+        ),
+        modifier = Modifier.padding(5.dp),
+        shadowElevation = 5.dp,
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.error
+    ) {
+        Text(
+            text = "Hello $name!",
+            modifier = Modifier.padding(8.dp)
+        )
+    }
+}
+
 
 @Composable
 fun ButtonExample(onButtonClicked: () -> Unit) {
@@ -99,7 +108,9 @@ fun ModifierEx() {
             contentColor = Color.Cyan
         ),
         onClick = {},
-        modifier = Modifier.size(200.dp).padding(30.dp),
+        modifier = Modifier
+            .size(200.dp)
+            .padding(30.dp),
         shape = RectangleShape
 
         ) {
@@ -126,7 +137,7 @@ fun ModifierEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ModifierEx()
+        Surface(name = "Android")
     }
 }
 
