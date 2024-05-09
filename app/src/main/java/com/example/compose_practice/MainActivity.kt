@@ -5,15 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
@@ -42,7 +48,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                BoxEx()
+                RowEx()
             }
         }
     }
@@ -52,7 +58,7 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(color = Color.Red,
         text = "Hello $name!\nHello $name!\nHello $name!",
-        modifier = Modifier.size(300.dp)   ,
+        modifier = Modifier.size(300.dp),
         fontSize = 30.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Cursive,
@@ -153,11 +159,43 @@ fun BoxEx() {
     }
 }
 
+@Composable
+fun RowEx() {
+    Row(
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.Bottom,
+        modifier = Modifier
+            .height(40.dp)
+            .width(200.dp)
+    ) {
+
+        Text(
+            text = "첫번째!",
+            textAlign = TextAlign.End,
+            modifier = Modifier.align(Alignment.Top)
+                .weight(3f)
+                .background(Color.Magenta)
+        )
+        Icon(
+            imageVector = Icons.Filled.AccountBox,
+            contentDescription = "추가",
+            modifier = Modifier.weight(1f)
+                .background(Color.Cyan)
+        )
+        Text(
+            text = "세번째!",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(3f)
+                .background(Color.Blue)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        BoxEx()
+        RowEx()
     }
 }
 
