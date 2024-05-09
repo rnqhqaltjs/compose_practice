@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -37,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +55,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                Outer()
+                ImageEx()
             }
         }
     }
@@ -94,7 +97,7 @@ fun SurfaceEx(name: String) {
 
 
 @Composable
-fun ButtonExample(onButtonClicked: () -> Unit) {
+fun ButtonEx(onButtonClicked: () -> Unit) {
     Button(
         onClick = onButtonClicked,
         enabled = true,
@@ -222,8 +225,8 @@ fun Outer() {
     Column(modifier = Modifier.width(150.dp)) {
         Inner(
             modifier = Modifier
-            .width(200.dp)
-            .height(160.dp)
+                .width(200.dp)
+                .height(160.dp)
         )
         Inner(
             modifier = Modifier
@@ -246,11 +249,26 @@ private fun Inner(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun ImageEx() {
+    Column {
+        Image(
+            painter = painterResource(id = R.drawable.grandcanyon),
+            contentDescription = "그랜드 캐년"
+        )
+
+        Image(
+            imageVector = Icons.Filled.Settings,
+            contentDescription = "세팅"
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        Outer()
+        ImageEx()
     }
 }
 
