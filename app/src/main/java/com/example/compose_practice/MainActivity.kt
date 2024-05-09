@@ -47,6 +47,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.compose_practice.ui.theme.Compose_practiceTheme
 
 class MainActivity : ComponentActivity() {
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                ImageEx()
+                CoilEx()
             }
         }
     }
@@ -264,11 +265,28 @@ fun ImageEx() {
     }
 }
 
+@Composable
+fun CoilEx() {
+
+    Column {
+        AsyncImage(
+            model = "https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000",
+            contentDescription = "cat image"
+        )
+        AsyncImage(
+            model = "https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000",
+            contentDescription = "cat image"
+        )
+    }
+
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ImageEx()
+        CoilEx()
     }
 }
 
