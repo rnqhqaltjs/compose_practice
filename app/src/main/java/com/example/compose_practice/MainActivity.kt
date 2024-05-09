@@ -7,6 +7,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                RowEx()
+                ColumnEx()
             }
         }
     }
@@ -172,21 +173,43 @@ fun RowEx() {
         Text(
             text = "첫번째!",
             textAlign = TextAlign.End,
-            modifier = Modifier.align(Alignment.Top)
+            modifier = Modifier
+                .align(Alignment.Top)
                 .weight(3f)
                 .background(Color.Magenta)
         )
         Icon(
             imageVector = Icons.Filled.AccountBox,
             contentDescription = "추가",
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .background(Color.Cyan)
         )
         Text(
             text = "세번째!",
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(3f)
+            modifier = Modifier
+                .weight(3f)
                 .background(Color.Blue)
+        )
+    }
+}
+
+@Composable
+fun ColumnEx(){
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.size(100.dp)
+    ) {
+        Text(
+            text = "첫 번째",
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        Text(text = "두 번째")
+        Text(
+            text = "세 번째",
+            modifier = Modifier.align(Alignment.Start)
         )
     }
 }
@@ -195,7 +218,7 @@ fun RowEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        RowEx()
+        ColumnEx()
     }
 }
 
