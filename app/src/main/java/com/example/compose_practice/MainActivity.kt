@@ -30,6 +30,8 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -37,8 +39,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -56,10 +61,28 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                CoilEx()
+                Surface (
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Column {
+                        CardEx(cardData)
+                        CardEx(cardData)
+                    }
+                }
             }
         }
     }
+
+    companion object {
+        val cardData = CardData(
+            imageUri = "https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000",
+            imageDescription = "cat image",
+            author = "집사",
+            description = "안녕하세요! 귀여운 고양이의 사진을 찍어보았습니다."
+        )
+    }
+
 }
 
 @Composable
@@ -267,7 +290,6 @@ fun ImageEx() {
 
 @Composable
 fun CoilEx() {
-
     Column {
         AsyncImage(
             model = "https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000",
@@ -278,15 +300,56 @@ fun CoilEx() {
             contentDescription = "cat image"
         )
     }
-
-
 }
+
+@Composable
+fun CardEx(cardData: CardData) {
+    val placeHolderColor = Color(0x33000000)
+
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) ,
+        modifier = Modifier.padding(4.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            AsyncImage(
+                model = cardData.imageUri,
+                contentScale = ContentScale.Crop,
+                contentDescription = cardData.imageDescription,
+                placeholder = ColorPainter(placeHolderColor),
+                modifier = Modifier.size(32.dp)
+                    .clip(CircleShape)
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Column {
+                Text(
+                    text = cardData.author
+                )
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(
+                    text = cardData.description
+                )
+            }
+        }
+    }
+}
+
+data class CardData(
+    val imageUri: String,
+    val imageDescription: String,
+    val author: String,
+    val description: String
+)
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        CoilEx()
+        Row {
+            CardEx(MainActivity.cardData)
+        }
     }
 }
 
