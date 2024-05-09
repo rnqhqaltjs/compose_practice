@@ -36,8 +36,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,7 +69,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                CheckBoxEX()
+                TextFieldEx()
             }
         }
     }
@@ -343,7 +345,7 @@ data class CardData(
 )
 
 @Composable
-fun CheckBoxEX() {
+fun CheckBoxEx() {
     Row(verticalAlignment = Alignment.CenterVertically) {
 //        var checked = remember { mutableStateOf(false) }
 
@@ -363,11 +365,28 @@ fun CheckBoxEX() {
     }
 }
 
+@Composable
+fun TextFieldEx() {
+    var name by remember { mutableStateOf("Tom") }
+    Column(modifier = Modifier.padding(16.dp)) {
+        OutlinedTextField(
+            value = name,
+            label = {
+                Text("이름")
+            },
+            onValueChange = { name = it }
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Text(text = "Hello $name")
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        CheckBoxEX()
+        TextFieldEx()
     }
 }
 
