@@ -7,16 +7,19 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -49,7 +52,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                ColumnEx()
+                Outer()
             }
         }
     }
@@ -196,7 +199,7 @@ fun RowEx() {
 }
 
 @Composable
-fun ColumnEx(){
+fun ColumnEx() {
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Center,
@@ -214,11 +217,40 @@ fun ColumnEx(){
     }
 }
 
+@Composable
+fun Outer() {
+    Column(modifier = Modifier.width(150.dp)) {
+        Inner(
+            modifier = Modifier
+            .width(200.dp)
+            .height(160.dp)
+        )
+        Inner(
+            modifier = Modifier
+                .width(200.dp)
+                .height(100.dp)
+        )
+    }
+}
+
+@Composable
+private fun Inner(modifier: Modifier = Modifier) {
+    BoxWithConstraints(modifier) {
+        if(maxHeight > 150.dp) {
+            Text(
+                text = "여기 꽤 길군요!",
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
+        Text("maxW:$maxWidth maxH:$maxHeight minW:$minWidth minH:$minHeight")
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ColumnEx()
+        Outer()
     }
 }
 
