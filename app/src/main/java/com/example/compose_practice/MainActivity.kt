@@ -13,19 +13,17 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
@@ -42,9 +40,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,7 +71,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                TopBarEx(name = "Android")
+                SlotEx()
             }
         }
     }
@@ -426,11 +424,76 @@ fun TopBarEx(name: String) {
     }
 }
 
+@Composable
+fun CheckboxWithSlot(
+    checked: Boolean,
+    onCheckedChanged: () -> Unit,
+    content: @Composable RowScope.() -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable {
+            onCheckedChanged()
+        }
+    ) {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { onCheckedChanged() }
+        )
+        content()
+    }
+}
+
+@Composable
+fun SlotEx() {
+    var checked1 by remember { mutableStateOf(false) }
+    var checked2 by remember { mutableStateOf(false) }
+
+    Column {
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Checkbox(
+//                checked = checked1.value,
+//                onCheckedChange = { checked1.value = it }
+//            )
+//            Text(
+//                text = "텍스트 1",
+//                modifier = Modifier.clickable { checked1.value = !checked1.value }
+//            )
+//        }
+
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Checkbox(
+//                checked = checked2.value,
+//                onCheckedChange = { checked2.value = it }
+//            )
+//            Text(
+//                text = "텍스트 2",
+//                modifier = Modifier.clickable { checked2.value = !checked2.value }
+//            )
+//        }
+
+        CheckboxWithSlot(
+            checked = checked1,
+            onCheckedChanged = { checked1 = !checked1 }
+        ) {
+            Text("텍스트 1")
+        }
+        CheckboxWithSlot(
+            checked = checked2,
+            onCheckedChanged = { checked2 = !checked2 }
+        ) {
+            Text("텍스트 2")
+        }
+    }
+
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        TopBarEx(name = "Android")
+        SlotEx()
     }
 }
 
