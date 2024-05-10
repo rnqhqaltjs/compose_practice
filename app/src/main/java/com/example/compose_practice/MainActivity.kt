@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -45,7 +47,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,7 +75,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                ScaffoldEx()
+                Surface(
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.primary
+                ) {
+                    CatalogEx(itemList = items)
+                }
             }
         }
     }
@@ -312,7 +317,7 @@ fun CardEx(cardData: CardData) {
     val placeHolderColor = Color(0x33000000)
 
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) ,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         modifier = Modifier.padding(4.dp)
     ) {
         Row(
@@ -549,11 +554,112 @@ fun ScaffoldEx() {
     }
 }
 
+@Composable
+fun Item(itemData: ItemData) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Image(
+                painter = painterResource(id = itemData.imageId),
+                contentDescription = itemData.title
+            )
+            Spacer(
+                modifier = Modifier.size(8.dp)
+            )
+            Text(
+                text = itemData.title
+            )
+            Spacer(
+                modifier = Modifier.size(8.dp)
+            )
+            Text(
+                text = itemData.description,
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+    }
+}
+
+
+@Composable
+fun CatalogEx(itemList: List<ItemData>) {
+    LazyColumn {
+
+        items(itemList) { item ->
+            Item(item)
+        }
+    }
+}
+
+data class ItemData(
+    val imageId: Int,
+    val title: String,
+    val description: String
+)
+
+val items = listOf(
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    ),
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    ),
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    ),
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    ),
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    ),
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    ),
+    ItemData(
+        imageId = R.drawable.grandcanyon,
+        title = "해변 놀이 공원",
+        description = "해변 놀이 공원 설명입니다. "
+    )
+)
+
+@Preview(showBackground = true)
+@Composable
+fun ItemPreview() {
+    Compose_practiceTheme {
+        Item(
+            ItemData(
+                imageId = R.drawable.grandcanyon,
+                title = "해변 놀이 공원",
+                description = "해변 놀이 공원 설명입니다. "
+            )
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ScaffoldEx()
+        CatalogEx(itemList = items)
     }
 }
+
+
 
