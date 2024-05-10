@@ -1,5 +1,6 @@
 package com.example.compose_practice
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,10 +35,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -71,7 +74,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
-                SlotEx()
+                ScaffoldEx()
             }
         }
     }
@@ -485,15 +488,72 @@ fun SlotEx() {
             Text("텍스트 2")
         }
     }
+}
 
+@Composable
+fun CheckBoxWithContent(
+    checked: Boolean,
+    toggleState: () -> Unit,
+    content: @Composable RowScope.() -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable {
+            toggleState()
+        }
+    ) {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { toggleState() }
+        )
+        content()
+    }
+}
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ScaffoldEx() {
+    var checked by remember { mutableStateOf(false) }
+
+    Scaffold(topBar = {
+        
+        TopAppBar(
+            navigationIcon = {
+                             IconButton(onClick = {}) {
+                                 Image(
+                                     imageVector = Icons.Filled.ArrowBack,
+                                     contentDescription = "뒤로가기"
+                                 )
+                             }
+            },
+            title = {
+                Text(text = "Scaffold App")
+            }
+        )
+    },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                
+            }
+        }
+    ) {
+        Surface(modifier = Modifier.padding(8.dp)) {
+            CheckBoxWithContent(
+                checked = checked,
+                toggleState = { checked = !checked }
+            ) {
+                Text(text = "컴포즈를 좋아합니다.")
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        SlotEx()
+        ScaffoldEx()
     }
 }
 
