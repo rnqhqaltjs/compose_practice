@@ -66,6 +66,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.example.compose_practice.ui.theme.Compose_practiceTheme
 
@@ -76,9 +77,10 @@ class MainActivity : ComponentActivity() {
             Compose_practiceTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.primary
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    CatalogEx(itemList = items)
+                    ConstraintLayoutEx()
                 }
             }
         }
@@ -639,25 +641,76 @@ val items = listOf(
     )
 )
 
-@Preview(showBackground = true)
 @Composable
-fun ItemPreview() {
-    Compose_practiceTheme {
-        Item(
-            ItemData(
-                imageId = R.drawable.grandcanyon,
-                title = "해변 놀이 공원",
-                description = "해변 놀이 공원 설명입니다. "
-            )
+fun ConstraintLayoutEx() {
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+
+        val (redBox, magentaBox, greenBox, yellowBox) = createRefs()
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Red)
+                .constrainAs(redBox) {
+                    bottom.linkTo(parent.bottom, margin = 8.dp)
+                    end.linkTo(parent.end, margin = 4.dp)
+                }
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Magenta)
+                .constrainAs(magentaBox) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Green)
+                .constrainAs(greenBox) {
+//                    start.linkTo(parent.start)
+//                    end.linkTo(parent.end)
+//                    top.linkTo(parent.top)
+//                    bottom.linkTo(parent.bottom)
+                    centerTo(parent)
+                }
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Yellow)
+                .constrainAs(yellowBox) {
+                    start.linkTo(magentaBox.end)
+                    top.linkTo(magentaBox.bottom)
+                }
         )
     }
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun ItemPreview() {
+//    Compose_practiceTheme {
+//        Item(
+//            ItemData(
+//                imageId = R.drawable.grandcanyon,
+//                title = "해변 놀이 공원",
+//                description = "해변 놀이 공원 설명입니다. "
+//            )
+//        )
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        CatalogEx(itemList = items)
+        ConstraintLayoutEx()
     }
 }
 

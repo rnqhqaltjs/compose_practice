@@ -70,4 +70,7 @@ dependencies {
     // Coil
     implementation(libs.coil)
     implementation(libs.coil.compose)
+
+    // ConstraintLayout
+    implementation(libs.androidx.constraintlayout.compose)
 }
