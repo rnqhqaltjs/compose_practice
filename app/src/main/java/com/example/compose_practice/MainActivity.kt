@@ -67,6 +67,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
@@ -758,6 +759,59 @@ fun ConstraintSetEx() {
     }
 }
 
+@Composable
+fun ConstraintLayoutEx2() {
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+
+        val (redBox, magentaBox, yellowBox, text) = createRefs()
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Red)
+                .constrainAs(redBox) {
+                    start.linkTo(parent.start, margin = 18.dp)
+                }
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Yellow)
+                .constrainAs(yellowBox) {
+                    start.linkTo(parent.start, margin = 32.dp)
+                }
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Magenta)
+                .constrainAs(magentaBox) {
+                    start.linkTo(parent.start, margin = 50.dp)
+                }
+        )
+
+
+
+//        createVerticalChain(redBox, yellowBox, magentaBox)
+        createVerticalChain(redBox, yellowBox, magentaBox, chainStyle = ChainStyle.SpreadInside)
+
+        val barrier = createEndBarrier(redBox, yellowBox, magentaBox)
+
+        Text(
+            text = "나라말슴이 듕귁에 달아 어린 백성이 나라말슴이 듕귁에 달아 어린 백성이 나라말슴이 듕귁에 달아 어린 백성이",
+            modifier = Modifier
+                .width(100.dp)
+                .constrainAs(text) {
+                start.linkTo(barrier)
+                    top.linkTo(magentaBox.bottom)
+            }
+        )
+    }
+}
+
+
 //@Preview(showBackground = true)
 //@Composable
 //fun ItemPreview() {
@@ -776,7 +830,7 @@ fun ConstraintSetEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ConstraintSetEx()
+        ConstraintLayoutEx2()
     }
 }
 
