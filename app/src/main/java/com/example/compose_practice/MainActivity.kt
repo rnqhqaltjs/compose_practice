@@ -58,6 +58,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -67,6 +68,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import com.example.compose_practice.ui.theme.Compose_practiceTheme
 
@@ -80,7 +82,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ConstraintLayoutEx()
+                    ConstraintSetEx()
                 }
             }
         }
@@ -692,6 +694,70 @@ fun ConstraintLayoutEx() {
     }
 }
 
+@Composable
+fun ConstraintSetEx() {
+    val constraintSet = ConstraintSet {
+
+        val redBox = createRefFor("redBox")
+        val magentaBox = createRefFor("magentaBox")
+        val greenBox = createRefFor("greenBox")
+        val yellowBox = createRefFor("yellowBox")
+
+        constrain(redBox) {
+            bottom.linkTo(parent.bottom, margin = 10.dp)
+            end.linkTo(parent.end, margin = 30.dp)
+        }
+
+        constrain(magentaBox) {
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+
+        constrain(greenBox) {
+            centerTo(parent)
+        }
+
+        constrain(yellowBox) {
+            start.linkTo(magentaBox.end)
+            top.linkTo(magentaBox.bottom)
+        }
+    }
+
+    ConstraintLayout(
+        constraintSet = constraintSet,
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Red)
+                .layoutId("redBox")
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Magenta)
+                .layoutId("magentaBox")
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Green)
+                .layoutId("greenBox")
+        )
+
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(Color.Yellow)
+                .layoutId("yellowBox")
+        )
+    }
+}
+
 //@Preview(showBackground = true)
 //@Composable
 //fun ItemPreview() {
@@ -710,7 +776,7 @@ fun ConstraintLayoutEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ConstraintLayoutEx()
+        ConstraintSetEx()
     }
 }
 
