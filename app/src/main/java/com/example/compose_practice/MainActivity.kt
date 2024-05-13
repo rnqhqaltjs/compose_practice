@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -55,6 +56,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -880,6 +883,24 @@ fun CardEx2(cardData: CardData) {
     }
 }
 
+@Composable
+fun CanvasEx() {
+    Canvas(modifier = Modifier.size(20.dp)) {
+        drawLine(Color.Red, Offset(20f, 10f), Offset(50f, 40f))
+
+        drawCircle(Color.Yellow, 10f, Offset(15f, 40f))
+
+        drawRect(Color.Magenta, Offset(30f, 30f), Size(10f, 10f))
+
+        drawLine(Color.Green, Offset(2.01f,21.0f), Offset(23.0f,12.0f))
+        drawLine(Color.Green, Offset(23.0f,12.0f), Offset(2.01f, 3.0f))
+        drawLine(Color.Green, Offset(2.01f, 3.0f), Offset(2.0f, 10.0f))
+        drawLine(Color.Green, Offset(2.0f, 10.0f), Offset(17.0f, 12.0f))
+        drawLine(Color.Green, Offset(17.0f, 12.0f), Offset(2.0f, 14.0f))
+        drawLine(Color.Green, Offset(2.0f, 14.0f), Offset(2.01f, 21.0f))
+    }
+}
+
 
 //@Preview(showBackground = true)
 //@Composable
@@ -899,9 +920,7 @@ fun CardEx2(cardData: CardData) {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        Column(modifier = Modifier.fillMaxSize()) {
-            CardEx2(MainActivity.cardData)
-        }
+        CanvasEx()
     }
 }
 
