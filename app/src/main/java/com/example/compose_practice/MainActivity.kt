@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -48,6 +49,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -55,6 +60,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -81,6 +87,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.example.compose_practice.ui.theme.Compose_practiceTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +99,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DropDownMenuEx()
+                    SnackbarEx()
                 }
             }
         }
@@ -1016,6 +1023,34 @@ fun DropDownMenuEx() {
     }
 }
 
+@Composable
+fun SnackbarEx() {
+    var counter by remember { mutableStateOf(0) }
+
+    val corountineScope = rememberCoroutineScope()
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) {
+        Button(onClick = {
+            counter++
+            corountineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = "카운터는 ${counter}입니다.",
+                    actionLabel = "닫기",
+                    duration = SnackbarDuration.Short
+                )
+//                when (result) {
+//                    SnackbarResult.Dismissed -> {}
+//                    SnackbarResult.ActionPerformed -> {}
+//                }
+            }
+        }) {
+            Text("더하기")
+        }
+    }
+}
+
+
 
 //@Preview(showBackground = true)
 //@Composable
@@ -1035,7 +1070,7 @@ fun DropDownMenuEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        DropDownMenuEx()
+        SnackbarEx()
     }
 }
 
