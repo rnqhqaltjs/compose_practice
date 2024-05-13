@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -70,6 +71,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.example.compose_practice.ui.theme.Compose_practiceTheme
 
@@ -83,7 +85,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ConstraintSetEx()
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        CardEx(cardData)
+                        CardEx(cardData)
+                        CardEx(cardData)
+                    }
                 }
             }
         }
@@ -804,10 +810,73 @@ fun ConstraintLayoutEx2() {
             modifier = Modifier
                 .width(100.dp)
                 .constrainAs(text) {
-                start.linkTo(barrier)
+                    start.linkTo(barrier)
                     top.linkTo(magentaBox.bottom)
-            }
+                }
         )
+    }
+}
+
+@Composable
+fun CardEx2(cardData: CardData) {
+    val placeHolderColor = Color(0x33000000)
+
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        modifier = Modifier.padding(4.dp)
+    ) {
+        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+            val (profileImage, author, description) = createRefs()
+            AsyncImage(
+                model = cardData.imageUri,
+                contentScale = ContentScale.Crop,
+                contentDescription = cardData.imageDescription,
+                placeholder = ColorPainter(placeHolderColor),
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .constrainAs(profileImage) {
+                        centerVerticallyTo(parent)
+                        start.linkTo(parent.start, margin = 8.dp)
+                    }
+            )
+            Text(
+                text = cardData.author,
+                modifier = Modifier.constrainAs(author) {
+                    linkTo(
+                        profileImage.end,
+                        parent.end,
+                        startMargin = 8.dp,
+                        endMargin = 8.dp
+                    )
+                    width = Dimension.fillToConstraints
+                }
+            )
+
+            Text(
+                text = cardData.description,
+                modifier = Modifier.constrainAs(description) {
+                    linkTo(
+                        profileImage.end,
+                        parent.end,
+                        startMargin = 8.dp,
+                        endMargin = 8.dp
+                    )
+                    width = Dimension.fillToConstraints
+                }
+            )
+
+            val chain = createVerticalChain(
+                author,
+                description,
+                chainStyle = ChainStyle.Packed
+            )
+
+            constrain(chain) {
+                top.linkTo(parent.top, margin = 8.dp)
+                bottom.linkTo(parent.bottom, margin = 8.dp)
+            }
+        }
     }
 }
 
@@ -830,7 +899,9 @@ fun ConstraintLayoutEx2() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        ConstraintLayoutEx2()
+        Column(modifier = Modifier.fillMaxSize()) {
+            CardEx2(MainActivity.cardData)
+        }
     }
 }
 
