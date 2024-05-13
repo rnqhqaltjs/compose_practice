@@ -39,6 +39,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -90,11 +92,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        CardEx(cardData)
-                        CardEx(cardData)
-                        CardEx(cardData)
-                    }
+                    DropDownMenuEx()
                 }
             }
         }
@@ -991,6 +989,33 @@ fun CustomDialogEx() {
     }
 }
 
+@Composable
+fun DropDownMenuEx() {
+    var expandDropDownMenu by remember { mutableStateOf(false) }
+    var counter by remember { mutableStateOf(0) }
+
+    Column {
+        Button(onClick = { expandDropDownMenu = true }) {
+            Text("드롭다운 메뉴 열기")
+        }
+        Text("카운터: $counter")
+    }
+
+    DropdownMenu(expanded = expandDropDownMenu,
+        onDismissRequest = {
+            expandDropDownMenu = false
+        }
+    ) {
+        DropdownMenuItem(text = { Text(text = "증가") }, onClick = {
+            counter++
+        })
+
+        DropdownMenuItem(text = { Text(text = "감소") }, onClick = {
+            counter--
+        })
+    }
+}
+
 
 //@Preview(showBackground = true)
 //@Composable
@@ -1010,7 +1035,7 @@ fun CustomDialogEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        CustomDialogEx()
+        DropDownMenuEx()
     }
 }
 
