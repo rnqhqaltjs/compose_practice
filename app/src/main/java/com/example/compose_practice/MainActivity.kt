@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -111,7 +112,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(color = Color.Red,
+    Text(
+        color = Color.Red,
         text = "Hello $name!\nHello $name!\nHello $name!",
         modifier = Modifier.size(300.dp),
         fontSize = 30.sp,
@@ -126,7 +128,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun SurfaceEx(name: String) {
-    Surface (
+    Surface(
         border = BorderStroke(
             width = 2.dp,
             color = Color.Magenta
@@ -155,7 +157,7 @@ fun ButtonEx(onButtonClicked: () -> Unit) {
     ) {
         Icon(
             imageVector = Icons.Filled.Send,
-           contentDescription = null
+            contentDescription = null
         )
         Spacer(
             modifier = Modifier.size(ButtonDefaults.IconSpacing)
@@ -177,7 +179,7 @@ fun ModifierEx() {
             .padding(30.dp),
         shape = RectangleShape
 
-        ) {
+    ) {
         Icon(
             imageVector = Icons.Filled.Search,
             contentDescription = null,
@@ -203,14 +205,18 @@ fun BoxEx() {
 //        Text(text = "Hello World", modifier = Modifier.align(Alignment.BottomEnd))
 //        Text(text = "Jetpack", modifier = Modifier.align(Alignment.CenterEnd))
 //        Text(text = "Compose", modifier = Modifier.align(Alignment.TopStart))
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Cyan)
-            .align(Alignment.CenterStart))
-        Box(modifier = Modifier
-            .size(70.dp)
-            .background(Color.Yellow)
-            .align(Alignment.Center))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Cyan)
+                .align(Alignment.CenterStart)
+        )
+        Box(
+            modifier = Modifier
+                .size(70.dp)
+                .background(Color.Yellow)
+                .align(Alignment.Center)
+        )
     }
 }
 
@@ -287,7 +293,7 @@ fun Outer() {
 @Composable
 private fun Inner(modifier: Modifier = Modifier) {
     BoxWithConstraints(modifier) {
-        if(maxHeight > 150.dp) {
+        if (maxHeight > 150.dp) {
             Text(
                 text = "여기 꽤 길군요!",
                 modifier = Modifier.align(Alignment.BottomCenter)
@@ -536,15 +542,15 @@ fun ScaffoldEx() {
     var checked by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
-        
+
         TopAppBar(
             navigationIcon = {
-                             IconButton(onClick = {}) {
-                                 Image(
-                                     imageVector = Icons.Filled.ArrowBack,
-                                     contentDescription = "뒤로가기"
-                                 )
-                             }
+                IconButton(onClick = {}) {
+                    Image(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "뒤로가기"
+                    )
+                }
             },
             title = {
                 Text(text = "Scaffold App")
@@ -553,7 +559,7 @@ fun ScaffoldEx() {
     },
         floatingActionButton = {
             FloatingActionButton(onClick = { /*TODO*/ }) {
-                
+
             }
         }
     ) {
@@ -802,7 +808,6 @@ fun ConstraintLayoutEx2() {
         )
 
 
-
 //        createVerticalChain(redBox, yellowBox, magentaBox)
         createVerticalChain(redBox, yellowBox, magentaBox, chainStyle = ChainStyle.SpreadInside)
 
@@ -892,12 +897,52 @@ fun CanvasEx() {
 
         drawRect(Color.Magenta, Offset(30f, 30f), Size(10f, 10f))
 
-        drawLine(Color.Green, Offset(2.01f,21.0f), Offset(23.0f,12.0f))
-        drawLine(Color.Green, Offset(23.0f,12.0f), Offset(2.01f, 3.0f))
+        drawLine(Color.Green, Offset(2.01f, 21.0f), Offset(23.0f, 12.0f))
+        drawLine(Color.Green, Offset(23.0f, 12.0f), Offset(2.01f, 3.0f))
         drawLine(Color.Green, Offset(2.01f, 3.0f), Offset(2.0f, 10.0f))
         drawLine(Color.Green, Offset(2.0f, 10.0f), Offset(17.0f, 12.0f))
         drawLine(Color.Green, Offset(17.0f, 12.0f), Offset(2.0f, 14.0f))
         drawLine(Color.Green, Offset(2.0f, 14.0f), Offset(2.01f, 21.0f))
+    }
+}
+
+@Composable
+fun DialogEx() {
+    var openDialog by remember { mutableStateOf(false) }
+    var counter by remember { mutableStateOf(0) }
+
+    Column {
+        Button(onClick = { openDialog = true }) {
+            Text("다이얼로그 열기")
+        }
+        Text("카운터: $counter")
+    }
+
+    if (openDialog) {
+        AlertDialog(onDismissRequest = {
+            openDialog = false
+        }, confirmButton = {
+            Button(onClick = {
+                counter++
+                openDialog = false
+            }) {
+                Text("더하기")
+            }
+
+        }, dismissButton = {
+            Button(onClick = {
+                openDialog = false
+            }) {
+                Text("취소")
+            }
+
+        }, title = {
+            Text("더하기")
+
+        }, text = {
+            Text("더하기 버튼을 누르면 카운터를 증가합니다.\n버튼을 눌러주세요.")
+
+        })
     }
 }
 
@@ -920,7 +965,7 @@ fun CanvasEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        CanvasEx()
+        DialogEx()
     }
 }
 
