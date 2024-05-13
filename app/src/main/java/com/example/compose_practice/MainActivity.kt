@@ -72,6 +72,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
@@ -946,6 +947,50 @@ fun DialogEx() {
     }
 }
 
+@Composable
+fun CustomDialogEx() {
+    var openDialog by remember { mutableStateOf(false) }
+    var counter by remember { mutableStateOf(0) }
+
+    Column {
+        Button(onClick = { openDialog = true }) {
+            Text("다이얼로그 열기")
+        }
+        Text("카운터: $counter")
+    }
+
+    if (openDialog) {
+        Dialog(onDismissRequest = {
+            openDialog = false
+        }) {
+            Surface {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Text("버튼을 클릭해주세요.\n * +1을 누르면 값이 증가됩니다.\n * -1을 누르면 값이 감소합니다.")
+                    Row(modifier = Modifier.align(Alignment.End)) {
+                        Button(onClick = {
+                            openDialog = false
+                        }) {
+                            Text("취소")
+                        }
+                        Button(onClick = {
+                            openDialog = false
+                            counter++
+                        }) {
+                            Text("+1")
+                        }
+                        Button(onClick = {
+                            openDialog = false
+                            counter--
+                        }) {
+                            Text("-1")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 //@Preview(showBackground = true)
 //@Composable
@@ -965,7 +1010,7 @@ fun DialogEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        DialogEx()
+        CustomDialogEx()
     }
 }
 
