@@ -35,6 +35,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -56,6 +57,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -99,7 +101,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SnackbarEx()
+                    PyeongToSquareMeter()
                 }
             }
         }
@@ -1050,6 +1052,81 @@ fun SnackbarEx() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomAppBarEx() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val corountineScope = rememberCoroutineScope()
+    var counter by remember { mutableStateOf(0) }
+
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        bottomBar = {
+            BottomAppBar() {
+                Text("헬로")
+                Button(onClick = {
+                    corountineScope.launch {
+                        snackbarHostState.showSnackbar("안녕하세요")
+                    }
+                }) {
+                    Text("인사하기")
+                }
+                Button(
+                    onClick = {
+                        counter++
+                        corountineScope.launch {
+                            snackbarHostState.showSnackbar("${counter}입니다.")
+                        }
+                    }
+                ) {
+                    Text("더하기")
+
+                }
+                Button(
+                    onClick = {
+                        counter--
+                        corountineScope.launch {
+                            snackbarHostState.showSnackbar("${counter}입니다.")
+                        }
+                    }
+                ) {
+                    Text("빼기")
+                }
+            }
+        }
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Text(
+                text = "카운터는 ${counter}회입니다.",
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+
+    }
+}
+
+@Composable
+fun PyeongToSquareMeter() {
+    var pyeong by remember {
+        mutableStateOf("23")
+    }
+    var squaremeter by remember {
+        mutableStateOf((23 * 3.306).toString())
+    }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        OutlinedTextField(value = pyeong, onValueChange = {
+            pyeong = it
+        }, label = {
+            Text("평")
+        })
+
+        OutlinedTextField(value = "", onValueChange = {
+
+        }, label = {
+            Text("제곱미터")
+        })
+    }
+}
 
 
 //@Preview(showBackground = true)
@@ -1070,7 +1147,7 @@ fun SnackbarEx() {
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        SnackbarEx()
+        PyeongToSquareMeter()
     }
 }
 
