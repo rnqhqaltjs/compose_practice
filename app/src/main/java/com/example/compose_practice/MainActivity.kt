@@ -4,6 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -26,7 +32,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -49,15 +55,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,6 +72,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -102,7 +108,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PyeongToSquareMeter()
+                    AnimationEx()
                 }
             }
         }
@@ -1172,6 +1178,111 @@ fun PyeongToSquareMeterStateless(
     }
 }
 
+@Composable
+fun AnimationEx() {
+    var helloWorldVisible by remember { mutableStateOf(true) }
+    var isRed by remember { mutableStateOf(false) }
+
+//    val backgroundColor = Color.LightGray
+    val backgroundColor by animateColorAsState(
+        targetValue = if(isRed) Color.Red else Color.White,
+        label = "backgroundColor"
+    )
+
+    val alpha by animateFloatAsState(
+        targetValue = if(isRed) 1.0f else 0.5f, label = "alpha"
+    )
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .background(backgroundColor)
+            .alpha(alpha)
+    ) {
+
+        AnimatedVisibility(
+            visible = helloWorldVisible,
+            enter = fadeIn() + expandHorizontally(),
+            exit = slideOutHorizontally()
+        ) {
+            Text(text = "Hello World!")
+        }
+
+        Row(
+            Modifier.selectable(
+                selected = helloWorldVisible,
+                onClick = {
+                    helloWorldVisible = true
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(selected = helloWorldVisible,
+                onClick = { helloWorldVisible = true }
+            )
+            Text(
+                text = "Hello World 보이기"
+            )
+        }
+
+        Row(
+            Modifier.selectable(
+                selected = !helloWorldVisible,
+                onClick = {
+                    helloWorldVisible = false
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = !helloWorldVisible,
+                onClick = { helloWorldVisible = false }
+            )
+            Text(
+                text = "Hello World 감추기"
+            )
+        }
+
+        Text(text = "배경 색을 바꾸어봅시다.")
+
+        Row(
+            Modifier.selectable(
+                selected = !isRed,
+                onClick = {
+                    isRed = false
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = !isRed,
+                onClick = { isRed = false }
+            )
+            Text(
+                text = "흰색"
+            )
+        }
+
+        Row(
+            Modifier.selectable(
+                selected = isRed,
+                onClick = {
+                    isRed = true
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = isRed,
+                onClick = { isRed = true }
+            )
+            Text(
+                text = "빨간색"
+            )
+        }
+    }
+}
+
 
 //@Preview(showBackground = true)
 //@Composable
@@ -1191,7 +1302,7 @@ fun PyeongToSquareMeterStateless(
 @Composable
 fun GreetingPreview() {
     Compose_practiceTheme {
-        PyeongToSquareMeter()
+        AnimationEx()
     }
 }
 
