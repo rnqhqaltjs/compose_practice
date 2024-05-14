@@ -63,6 +63,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -1106,25 +1107,68 @@ fun BottomAppBarEx() {
 
 @Composable
 fun PyeongToSquareMeter() {
-    var pyeong by remember {
+    var pyeong by rememberSaveable {
         mutableStateOf("23")
     }
-    var squaremeter by remember {
+    var squaremeter by rememberSaveable {
         mutableStateOf((23 * 3.306).toString())
     }
 
+//    Column(modifier = Modifier.padding(16.dp)) {
+//        OutlinedTextField(value = pyeong,
+//            onValueChange = {
+//                if (it.isBlank()) {
+//                    pyeong = ""
+//                    squaremeter = ""
+//                    return@OutlinedTextField
+//                }
+//                val numericValue = it.toFloatOrNull() ?: return@OutlinedTextField
+//                pyeong = it
+//                squaremeter = (numericValue * 3.306).toString()
+//            }, label = {
+//                Text("평")
+//            })
+//
+//        OutlinedTextField(value = squaremeter,
+//            onValueChange = {},
+//            label = {
+//                Text("제곱미터")
+//            })
+//    }
+
+    PyeongToSquareMeterStateless(pyeong = pyeong, squareMeter = squaremeter) {
+        if (it.isBlank()) {
+            pyeong = ""
+            squaremeter = ""
+            return@PyeongToSquareMeterStateless
+        }
+        val numericValue = it.toFloatOrNull() ?: return@PyeongToSquareMeterStateless
+        pyeong = it
+        squaremeter = (numericValue * 3.306).toString()
+    }
+}
+
+@Composable
+fun PyeongToSquareMeterStateless(
+    pyeong: String,
+    squareMeter: String,
+    onPyeongChange: (String) -> Unit
+) {
+
     Column(modifier = Modifier.padding(16.dp)) {
-        OutlinedTextField(value = pyeong, onValueChange = {
-            pyeong = it
-        }, label = {
-            Text("평")
-        })
+        OutlinedTextField(
+            value = pyeong,
+            onValueChange = onPyeongChange,
+            label = {
+                Text("평")
+            })
 
-        OutlinedTextField(value = "", onValueChange = {
-
-        }, label = {
-            Text("제곱미터")
-        })
+        OutlinedTextField(
+            value = squareMeter,
+            onValueChange = {},
+            label = {
+                Text("제곱미터")
+            })
     }
 }
 
